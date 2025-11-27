@@ -37,7 +37,36 @@ class GitEventsParser:
             return "Create repo - "
         
         return f"{payload.get('ref')} {payload.get('ref_type')} created"
+    
+    @event
+    def delete(self, payload: dict) -> str:
+        return f"{payload.get('ref')} {payload.get('ref_type')} deleted"
+    
+    @event
+    def discussion(self, payload: dict) -> str:
+        return f"{payload.get('action')} discussion"
+    
+    @event
+    def fork(self, payload: dict) -> str:
+        return f"{payload.get('action')}"
+    
+    @event
+    def gollum(self, payload: dict) -> str:
+        return f"Updated {payload.get('pages')}"
 
     @event
     def issue_comment(self, payload: dict[str, str]) -> str:
-        return "issue_comment"
+        return f"{payload.get('action')} comment in issue#{payload.get('issue').get('number')}"
+    
+    @event
+    def public(self, payload: dict) -> str:
+        return "maded a public"
+
+    @event
+    def push(self, payload: dict) -> str:
+        return f"pushed in {payload.get('ref')}"
+    
+    @event
+    def commit_comment(self, payload: dict[str, str]) -> str:
+        return "Commit comment"
+    
