@@ -1,4 +1,22 @@
 import click as cli
+from app.git_client import GitClient
+from app.git_parse import GitParser
+from requests import HTTPError
+
+def do(username: str):
+    client = GitClient()
+    parser = GitParser()
+
+    try:
+        events = parser.parse_events(
+            events=client.fetch_events(username)
+        )
+        cli.secho(f"Recent actions of the {username} user:", fg="cyan")
+
+        for e in events:
+            cli.echo(e)
+    except HTTPError as e:
+        cli.secho(f"There is no user named {username}. Please, check it", fg="red")
 
 
 @cli.command()
@@ -6,4 +24,4 @@ import click as cli
 def app(user: str):
     if not user:
         raise cli.exceptions.BadArgumentUsage("Sorry, you need a user param")
-    cli.echo(f"User: {user}")
+    do(user)
