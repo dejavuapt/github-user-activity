@@ -1,11 +1,11 @@
 import click as cli
 from app.git_client import GitClient
-from app.git_parse import GitParser
+from app.git_parse import GitEventsParser
 from requests import HTTPError
 
 def do(username: str):
     client = GitClient()
-    parser = GitParser()
+    parser = GitEventsParser()
 
     try:
         events = parser.parse_events(
